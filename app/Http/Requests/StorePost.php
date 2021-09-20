@@ -25,7 +25,8 @@ class StorePost extends FormRequest
     {
         return [
             'title' => 'required|min:5|max:50',
-            'content' => 'required|min:5|max:200'
+            'content' => 'required|min:5|max:200',
+            'thumbnail'=>  'image|mimes:jpg,jpeg,png|max:6000' ///kb
         ];
         //php artisan make:request StoreComment
     }

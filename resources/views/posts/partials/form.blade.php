@@ -7,11 +7,19 @@
     @enderror
     <div class="form-group">
         <label for="content">Content</label>
-        <textarea id="content" name="content" class="form-control"cols="30" rows="10">{{ old('content', optional($post ?? null)->content) }}</textarea>
+        <textarea id="content" name="content" class="form-control"cols="30" rows="5">{{ old('content', optional($post ?? null)->content) }}</textarea>
     </div>
     @error('content')
         <div class="alert alert-danger">{{ $message }}</div>
     @enderror
+    <div class="form-group">
+        <label for="thumbnail">Thumbnail</label>
+        <input id="title" type="file" name="thumbnail" class="form-control-file">
+    </div>
+    @error('thumbnail')
+        <div class="alert alert-danger">{{ $message }}</div>
+    @enderror
+
 
     {{--  @errors
 
