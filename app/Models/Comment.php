@@ -9,23 +9,34 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Scopes\LatestScope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\Taggable;
 
 class Comment extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Taggable;
     use HasFactory;
     protected $fillable = ['user_id','content'];
 
-    public function blogPost()
-    {
-        // return $this->belongsTo(BlogPost::class, 'post_id', 'blog_post_id');
+    // public function blogPost()
+    // {
+    //     // return $this->belongsTo(BlogPost::class, 'post_id', 'blog_post_id');
 
-        return $this->belongsTo(BlogPost::class);
+    //     return $this->belongsTo(BlogPost::class);
+    // }
+    public function commentable()
+    {
+        return $this->morphTo();
     }
     public function user()
     {
         return $this->belongsTo(User::class);
     }
+     //move to Taggable traits
+    // public function tags()
+    // {
+    //     return $this->morphToMany(Tag::class,'taggable')->withTimestamps();
+    // }
+
     public function scopeLatest(Builder $query)
     {
         return $query->orderBy(static::CREATED_AT, 'desc');
@@ -36,8 +47,17 @@ class Comment extends Model
         parent::boot();
         // static::addGlobalScope(new LatestScope);
         static::creating(function(Comment $comment){
-            Cache::forget("blog-post-{$comment->blog_post_id}");
-            Cache::forget("mostCommented");
+
+            // dump($comment);
+            // dump($comment->commentable_type);
+            // dd(BlogPost::class);
+            // Cache::forget("blog-post-{$comment->blog_post_id}");
+            if($comment->commentable_type === BlogPost::class){
+
+                Cache::forget("blog-post-{$comment->commentable_id}");
+                Cache::forget("mostCommented");
+            }
+
         });
     }
 

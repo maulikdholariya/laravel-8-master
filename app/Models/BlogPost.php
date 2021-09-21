@@ -10,33 +10,46 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Scopes\DeletedAdminScope;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\Taggable;
 
 class BlogPost extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Taggable;
     protected $fillable = ['title', 'content', 'user_id'];
     protected $table = 'blog_posts';
     use HasFactory;
 
 
+    // public function comments()
+    // {
+    //     return $this->hasMany(Comment::class)->latest();
+    // }
     public function comments()
     {
-        return $this->hasMany(Comment::class)->latest();
+        return $this->morphMany(Comment::class, 'commentable')->latest();
     }
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class)->withTimestamps();
-    }
+    // public function tags()
+    // {
+    //     return $this->belongsToMany(Tag::class)->withTimestamps();
+    // }
+    // move to Taggable traits
+    // public function tags()
+    // {
+    //     return $this->morphToMany(Tag::class,'taggable')->withTimestamps();
+    // }
+    // public function image()
+    // {
+    //     return $this->hasOne(Image::class);
+    // }
     public function image()
     {
-        return $this->hasOne(Image::class);
+        return $this->morphOne(Image::class,'imageable');
     }
-
     public function scopeLatest(Builder $query)
     {
         return $query->orderBy(static::CREATED_AT, 'desc');
