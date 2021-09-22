@@ -24,7 +24,7 @@ class RenameBlogPostTagToTaggables extends Migration
         Schema::table('taggables', function (Blueprint $table) {
             // $table->morphs('taggable');
             $table->unsignedBigInteger('taggable_id')->index();
-            $table->string('taggable_type', 100 )->index();
+            $table->string('taggable_type', 250 )->index();
         });
     }
 

@@ -18,7 +18,7 @@ class AddPolymorphToCommentsTable extends Migration
             $table->dropColumn('blog_post_id');
 
             $table->unsignedBigInteger('commentable_id')->index();
-            $table->string('commentable_type',100)->index();
+            $table->string('commentable_type',250)->index();
         });
     }
 

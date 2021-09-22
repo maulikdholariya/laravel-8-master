@@ -7,6 +7,8 @@ use App\Mail\CommentPosted;
 use App\Models\BlogPost;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CommentPostedMarkdown;
+use App\Jobs\NotifyUsersPostWasCommented;
+use App\Jobs\ThrottledMail;
 
 class PostCommentController extends Controller
 {
@@ -22,10 +24,25 @@ class PostCommentController extends Controller
             'user_id' => $request->user()->id
         ]);
 
-        Mail::to($post->user)->send(
-            new CommentPostedMarkdown($comment)
-        );
-         // new CommentPosted($comment)
+        // Mail::to($post->user)->send(
+        //     new CommentPosted($comment)
+        //     // new CommentPostedMarkdown($comment)
+        // );
+        // Mail::to($post->user)->queue(
+        //     new CommentPosted($comment)
+        // );
+
+        // $when = now()->addMinutes(1);
+
+        // Mail::to($post->user)->later(
+        //     $when,
+        //     new CommentPosted($comment)
+        //     // new CommentPostedMarkdown($comment)
+        // );
+        // ThrottledMail::dispatch(new CommentPostedMarkdown($comment), $post->user);
+        NotifyUsersPostWasCommented::dispatch($comment);
+
+
         return redirect()->back()->withStatus('Comment was created!');
     }
 }

@@ -8,9 +8,19 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Comment;
 
-class CommentPostedMarkdown extends Mailable
+class CommentPostedMarkdown extends Mailable 
 {
     use Queueable, SerializesModels;
+
+
+    /* .env update
+        BROADCAST_DRIVER=log
+        CACHE_DRIVER=file
+        QUEUE_CONNECTION=database
+        SESSION_DRIVER=file
+        SESSION_LIFETIME=120
+    *php artisan queue:table
+    */
 
     /**
      * Create a new message instance.
@@ -23,7 +33,7 @@ class CommentPostedMarkdown extends Mailable
     }
 
     /**
-     * Build the message.   
+     * Build the message.
      *
      * @return $this
      */
