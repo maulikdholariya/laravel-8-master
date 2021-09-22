@@ -42,23 +42,26 @@ class Comment extends Model
         return $query->orderBy(static::CREATED_AT, 'desc');
     }
     // delete relational comments in blog post
-    public static function boot()
-    {
-        parent::boot();
-        // static::addGlobalScope(new LatestScope);
-        static::creating(function(Comment $comment){
+    // public static function boot()
+    // {
+    //     parent::boot();
+    //     // static::addGlobalScope(new LatestScope);
+    //     // static::creating(function(Comment $comment){
 
-            // dump($comment);
-            // dump($comment->commentable_type);
-            // dd(BlogPost::class);
-            // Cache::forget("blog-post-{$comment->blog_post_id}");
-            if($comment->commentable_type === BlogPost::class){
+    //     //     // dump($comment);
+    //     //     // dump($comment->commentable_type);
+    //     //     // dd(BlogPost::class);
+    //     //     // Cache::forget("blog-post-{$comment->blog_post_id}");
+    //     //     if($comment->commentable_type === BlogPost::class){
 
-                Cache::forget("blog-post-{$comment->commentable_id}");
-                Cache::forget("mostCommented");
-            }
+    //     //         Cache::forget("blog-post-{$comment->commentable_id}");
+    //     //         Cache::forget("mostCommented");
+    //     //     }
 
-        });
-    }
+    //     // });
+    //     ///add in CommentObserver
+
+
+    // }
 
 }

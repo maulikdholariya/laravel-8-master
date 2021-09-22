@@ -72,16 +72,18 @@ class BlogPost extends Model
         static::addGlobalScope(new DeletedAdminScope);
         parent::boot();
         // static::addGlobalScope(new LatestScope);
-        static::deleting(function(BlogPost $blogPost){
-            $blogPost->comments()->delete();
-            Cache::forget("blog-post-{$blogPost->id}");
-        });
-        static::updating(function(BlogPost $blogPost){
-            Cache::forget("blog-post-{$blogPost->id}");
-        });
-        static::restoring(function(BlogPost $blogPost){
-            $blogPost->comments()->restore();
-        });
+        // static::deleting(function(BlogPost $blogPost){
+        //     $blogPost->comments()->delete();
+        //     Cache::forget("blog-post-{$blogPost->id}");
+        // });
+        // static::updating(function(BlogPost $blogPost){
+        //     Cache::forget("blog-post-{$blogPost->id}");
+        // });
+        // static::restoring(function(BlogPost $blogPost){
+        //     $blogPost->comments()->restore();
+        // });
+
+        /// add in BlogPostObserver
     }
 
 }
