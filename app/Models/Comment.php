@@ -17,8 +17,6 @@ class Comment extends Model
     use HasFactory;
     protected $fillable = ['user_id','content'];
 
-    protected $hidden = ['deleted_at', 'commentable_type', 'commentable_id', 'user_id'];
-
     // public function blogPost()
     // {
     //     // return $this->belongsTo(BlogPost::class, 'post_id', 'blog_post_id');
