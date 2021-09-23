@@ -10,6 +10,7 @@ use App\Models\BlogPost;
 use App\Observers\BlogPostObserver;
 use App\Models\Comment;
 use App\Observers\CommentObserver;
+use App\Services\Counter;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -48,5 +49,26 @@ class AppServiceProvider extends ServiceProvider
 
         BlogPost::observe(BlogPostObserver::class);
         Comment::observe(CommentObserver::class);
+
+        // $this->app->bind(Counter::class, function ($app){
+        //     return new Counter(5);
+        // });
+
+        $this->app->singleton(Counter::class, function ($app){
+            return new Counter(
+                $app->make('Illuminate\Contracts\Cache\Factory'),
+                $app->make('Illuminate\Contracts\Session\Session'),
+                5);
+        });
+
+        // $this->app->when(Counter::class)
+        //         ->needs('$timeout')
+        //         ->give('5');
+
+        $this->app->bind(
+
+            'App\Contracts\CounterContract',Counter::class
+        );
     }
 }
+

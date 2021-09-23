@@ -6,6 +6,8 @@ use App\Http\Requests\UpdateUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Image;
+use App\Services\Counter;
+use App\Facedes\CounterFacede;
 
 class UserController extends Controller
 {
@@ -54,7 +56,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('users.show', ['user' =>$user]);
+        //  add AppServiceProvider
+        // $counter = new Counter(5);
+        $counter = resolve(Counter::class);
+        return view('users.show', [
+            'user' =>$user,
+            'counter' =>CounterFacede::increment("user-{$user->id}"),
+        ]);
     }
 
     /**

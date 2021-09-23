@@ -8,6 +8,7 @@
             </div>
             <div class="col-8">
                 <h3>{{ $user->name }}</h3>
+                <p>Currenty viewed by {{ $counter }} other users</p>
                 @commentForm(['route'=> route('users.comments.store',['user'=>$user->id])])
                 @endcommentForm()
                 @commentList(['comments' => $user->commentsOn])
