@@ -4,7 +4,9 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
-
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Auth\Access\AuthorizationException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class Handler extends ExceptionHandler
 {
     /**
@@ -36,5 +38,37 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Record not found.'
+                ], 404);
+            }
+            // if ($request->expectsJson() && $e instanceof ModelNotFoundException) {
+            //         return response()->json(['message' => $e->getMessage()],404);
+            // }
+
+            // if ($request->expectsJson() && $e instanceof AuthorizationException) {
+            //     return response()->json(['message' => $e->getMessage()], 403);
+            // }
+
+        });
     }
+    // custom added
+
+
+    // public function render($request, Throwable $exception)
+    // {
+    //     if ($request->expectsJson() && $exception instanceof ModelNotFoundException) {
+    //         return response()->json(['message' => $exception->getMessage()],404);
+    //     }
+
+    //     if ($request->expectsJson() && $exception instanceof AuthorizationException) {
+    //         return response()->json(['message' => $exception->getMessage()], 403);
+    //     }
+
+    //     return parent::render($request, $exception);
+    // }
 }

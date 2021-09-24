@@ -53,7 +53,8 @@ class CommentPolicy
      */
     public function update(User $user, Comment $comment)
     {
-        $comment->user_id === $user->id;
+
+        return $comment->user_id === $user->id;
     }
 
     /**
@@ -65,7 +66,7 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
-        $comment->user->id === $user->id;
+       return $comment->user_id === $user->id;
     }
 
     /**

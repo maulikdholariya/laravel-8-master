@@ -16,7 +16,7 @@ class PostCommentController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api')->only(['store']);
+        $this->middleware('auth:api')->only(['store', 'update', 'destroy']);
     }
     /**php artisan make:controller Api/v1/PostCommentController --api
      * Display a listing of the resource.
@@ -69,7 +69,7 @@ class PostCommentController extends Controller
      */
     public function update(BlogPost $post, Comment $comment, StoreComment $request)
     {
-        $this->authorize($comment);
+        $this->authorize('update',$comment);
         $comment->content =$request->input('content');
         $comment->save();
         return new CommentResource($comment);
